@@ -16,26 +16,16 @@ $ jpm install https://github.com/cideM/janet-hsluv.git
 
 ## Functions
 
-### `hsluv2rgb`
-Converts HSLuv color values to RGB.
-- **Parameters**: `h` (hue: 0-360°), `s` (saturation: 0-100), `l` (lightness: 0-100)
-- **Returns**: Tuple of `[r, g, b]` where each component is 0.0-1.0
+- RGB triplets are always ranges from 0.0 to 1.0
+- HSL triplets are `h` (hue: 0-360°), `s` (saturation: 0-100), `l` (lightness: 0-100)
+- LUV triplets are `l` (lightness: 0-100) and then a `u` (red-green)/`v` (yellow-blue) pair, which are both unbounded and can be negative and positive but are typically between -100 and +100
 
-### `rgb2hsluv`
-Converts RGB color values to HSLuv.
-- **Parameters**: `r`, `g`, `b` (each 0.0-1.0)
-- **Returns**: Tuple of `[h, s, l]` where h is 0-360°, s and l are 0-100
-
-### `hpluv2rgb`
-Converts HPLuv color values to RGB. HPLuv is a variant with more uniform chroma.
-- **Parameters**: `h` (hue: 0-360°), `s` (saturation: 0-100), `l` (lightness: 0-100)
-- **Returns**: Tuple of `[r, g, b]` where each component is 0.0-1.0
-
-### `rgb2hpluv`
-Converts RGB color values to HPLuv.
-- **Parameters**: `r`, `g`, `b` (each 0.0-1.0)
-- **Returns**: Tuple of `[h, s, l]` where h is 0-360°, s is 0-100 (may exceed if color is outside HPLuv gamut), l is 0-100
-- **Note**: Some RGB colors fall outside the HPLuv gamut. The saturation value may exceed 100 in these cases. The C function returns a status code, but this wrapper simply returns the values as-is.
+- `hsluv2rgb`: HSLuv -> RGB
+- `rgb2hsluv`: RGB -> HSLuv
+- `hpluv2rgb`: HPLuv -> RGB (HPLuv is a variant with more uniform chroma)
+- `rgb2hpluv`: RGB -> HPLuv (returns a tuple with `[h,s,l,status]`, where status indicates whether the saturation is outside the HPLuv gamut)
+- `hsluv2luv`: HSLuv -> Luv
+- `luv2hsluv`: Luv -> HSLuv
 
 ## Quirks, Caveats, and Gotchas
 
@@ -50,4 +40,3 @@ It's normal for small floating point precision errors to accumulate when chainin
 ## What is HSLuv?
 
 HSLuv is a human-friendly alternative to HSL color space. It provides perceptually uniform lightness and saturation, making it easier to create consistent color palettes. HPLuv is a variant with an even more uniform chroma distribution but a smaller gamut.
-
