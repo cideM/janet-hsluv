@@ -2,22 +2,17 @@
 
 This tiny Janet library is a simple wrapper around the official HSLuv (revision 4) C implementation. It tries to be 100% faithful to the original and doesn't attempt to e.g., validate that inputs are within the required range (just like the C code).
 
-## Quickstart
+## Usage
 
 ```shell
-$ jpm install --local
-$ jpm test
+$ jpm install https://github.com/cideM/janet-hsluv.git
 ```
 
-If you use Nix, create an `.envrc` file like this:
-```text
-use flake
-path_add PATH ./jpm_tree/bin/
+```janet
+(import hsluv)
+
+(hsluv/rgb2hsluv 1.0 1.0 1.0)  # → [0 0 100]
 ```
-
-## What is HSLuv?
-
-HSLuv is a human-friendly alternative to HSL color space. It provides perceptually uniform lightness and saturation, making it easier to create consistent color palettes. HPLuv is a variant with an even more uniform chroma distribution but a smaller gamut.
 
 ## Functions
 
@@ -52,14 +47,7 @@ It's normal for small floating point precision errors to accumulate when chainin
 # NOT exactly [1.0 1.0 1.0]
 ```
 
-## Usage
+## What is HSLuv?
 
-```shell
-$ jpm install https://github.com/cideM/janet-hsluv.git
-```
+HSLuv is a human-friendly alternative to HSL color space. It provides perceptually uniform lightness and saturation, making it easier to create consistent color palettes. HPLuv is a variant with an even more uniform chroma distribution but a smaller gamut.
 
-```janet
-(import hsluv)
-
-(hsluv/rgb2hsluv 1.0 1.0 1.0)  # → [0 0 100]
-```
