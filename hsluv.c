@@ -459,3 +459,36 @@ rgb2hpluv(double r, double g, double b, double* ph, double* ps, double* pl)
 
     return (0.0 <= tmp.b  &&  tmp.b <= 100.0) ? 0 : -1;
 }
+
+// These additions here are not part of the original HSLuv C implementation. I
+// added them so that more code is public, which is needed for implementing
+// HSLuv color blending via LUV color space.
+
+double hsluv_max_chroma_for_lh(double l, double h)
+{
+    return max_chroma_for_lh(l, h);
+}
+
+void hsluv2luv(double h, double s, double l, double* pL, double* pU, double* pV)
+{
+    Triplet tmp = { h, s, l };
+
+    hsluv2lch(&tmp);
+    lch2luv(&tmp);
+
+    *pL = tmp.a;
+    *pU = tmp.b;
+    *pV = tmp.c;
+}
+
+void luv2hsluv(double L, double U, double V, double* ph, double* ps, double* pl)
+{
+    Triplet tmp = { L, U, V };
+
+    luv2lch(&tmp);
+    lch2hsluv(&tmp);
+
+    *ph = tmp.a;
+    *ps = tmp.b;
+    *pl = tmp.c;
+}

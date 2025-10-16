@@ -110,4 +110,38 @@ int rgb2hpluv(double r, double g, double b, double* ph, double* ps, double* pl);
 }
 #endif
 
+// These additions here are not part of the original HSLuv C implementation. I
+// added them so that more code is public, which is needed for implementing
+// HSLuv color blending via LUV color space.
+
+/**
+ * Get maximum chroma for given lightness and hue.
+ * @param l Lightness. Between 0.0 and 100.0.
+ * @param h Hue. Between 0.0 and 360.0.
+ * @return Maximum chroma value.
+ */
+double hsluv_max_chroma_for_lh(double l, double h);
+
+/**
+ * Convert HSLuv to LUV.
+ * @param h Hue. Between 0.0 and 360.0.
+ * @param s Saturation. Between 0.0 and 100.0.
+ * @param l Lightness. Between 0.0 and 100.0.
+ * @param[out] pL L component in LUV.
+ * @param[out] pU U component in LUV.
+ * @param[out] pV V component in LUV.
+ */
+void hsluv2luv(double h, double s, double l, double* pL, double* pU, double* pV);
+
+/**
+ * Convert LUV to HSLuv.
+ * @param L L component in LUV.
+ * @param U U component in LUV.
+ * @param V V component in LUV.
+ * @param[out] ph Hue. Between 0.0 and 360.0.
+ * @param[out] ps Saturation. Between 0.0 and 100.0.
+ * @param[out] pl Lightness. Between 0.0 and 100.0.
+ */
+void luv2hsluv(double L, double U, double V, double* ph, double* ps, double* pl);
+
 #endif  /* HSLUV_H */

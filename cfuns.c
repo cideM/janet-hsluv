@@ -73,6 +73,52 @@ static Janet cfun_rgb2hpluv(int32_t argc, Janet *argv) {
     return janet_wrap_tuple(janet_tuple_end(hsl));
 }
 
+
+static Janet cfun_max_chroma(int32_t argc, Janet *argv) {
+    janet_fixarity(argc, 2);
+    
+    double l = janet_getnumber(argv, 0);
+    double h = janet_getnumber(argv, 1);
+    
+    return janet_wrap_number(hsluv_max_chroma_for_lh(l, h));
+}
+
+static Janet cfun_hsluv2luv(int32_t argc, Janet *argv) {
+    janet_fixarity(argc, 3);
+    
+    double h = janet_getnumber(argv, 0);
+    double s = janet_getnumber(argv, 1);
+    double l = janet_getnumber(argv, 2);
+    
+    double L, U, V;
+    hsluv2luv(h, s, l, &L, &U, &V);
+    
+    Janet *luv = janet_tuple_begin(3);
+    luv[0] = janet_wrap_number(L);
+    luv[1] = janet_wrap_number(U);
+    luv[2] = janet_wrap_number(V);
+    
+    return janet_wrap_tuple(janet_tuple_end(luv));
+}
+
+static Janet cfun_luv2hsluv(int32_t argc, Janet *argv) {
+    janet_fixarity(argc, 3);
+    
+    double L = janet_getnumber(argv, 0);
+    double U = janet_getnumber(argv, 1);
+    double V = janet_getnumber(argv, 2);
+    
+    double h, s, l;
+    luv2hsluv(L, U, V, &h, &s, &l);
+    
+    Janet *hsl = janet_tuple_begin(3);
+    hsl[0] = janet_wrap_number(h);
+    hsl[1] = janet_wrap_number(s);
+    hsl[2] = janet_wrap_number(l);
+    
+    return janet_wrap_tuple(janet_tuple_end(hsl));
+}
+
 static const JanetReg cfuns[] = {
     {"hsluv2rgb", cfun_hsluv2rgb, 
      "(hsluv/hsluv2rgb h s l)\n\nConvert HSLuv to RGB. "
@@ -102,6 +148,12 @@ static const JanetReg cfuns[] = {
      "h is between 0.0 and 360.0. s is between 0.0 and 100.0 if the input is "
      "representable in HPLuv color space; and outside the range if it's not. "
      "l is between 0.0 and 100.0."},
+    {"max-chroma", cfun_max_chroma,
+     "(hsluv/max-chroma l h)\n\nGet the maximum chroma for a given lightness and hue."},
+    {"hsluv2luv", cfun_hsluv2luv,
+     "(hsluv/hsluv2luv h s l)\n\nConvert HSLuv to CIE LUV color space."},
+    {"luv2hsluv", cfun_luv2hsluv,
+     "(hsluv/luv2hsluv L U V)\n\nConvert CIE LUV to HSLuv color space."},
     {NULL, NULL, NULL}
 };
 
