@@ -9,6 +9,12 @@ $ jpm install --local
 $ jpm test
 ```
 
+If you use Nix, create an `.envrc` file like this:
+```text
+use flake
+path_add PATH ./jpm_tree/bin/
+```
+
 ## What is HSLuv?
 
 HSLuv is a human-friendly alternative to HSL color space. It provides perceptually uniform lightness and saturation, making it easier to create consistent color palettes. HPLuv is a variant with an even more uniform chroma distribution but a smaller gamut.
@@ -48,6 +54,10 @@ For example:
 ```
 
 ## Usage
+
+```shell
+$ jpm install https://github.com/cideM/janet-hsluv.git
+```
 
 ```janet
 (import hsluv)
